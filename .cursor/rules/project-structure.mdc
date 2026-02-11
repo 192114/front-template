@@ -1,0 +1,44 @@
+---
+description: 目录结构、文件职责与命名规范
+alwaysApply: true
+---
+
+# 项目结构与命名规范
+
+## src/ 目录结构（各 app）
+
+```
+src/
+├── pages/              # 按业务域划分的页面
+│   └── {domain}/       # 如 users、auth
+│       ├── *.page.tsx  # 或 *.page.vue 页面入口
+│       └── *-*.tsx     # 业务组件（如 user-table、user-form）
+├── components/         # 纯 UI 组件（无业务逻辑）
+├── api-contract/       # API 协议定义（先定义，供后端生成 DTO）
+├── api/                # 基于 contract 的请求实现
+├── hooks/              # 自定义 hooks
+├── utils/              # 工具函数
+├── constants/          # 常量
+└── types/              # 全局类型定义
+```
+
+## 职责划分
+
+| 目录 | 职责 | 示例 |
+|------|------|------|
+| pages/* | 页面入口 + 业务组件 | `user-list.page.tsx`, `user-table.tsx` |
+| components/ | 纯 UI，可跨页面复用 | `button.tsx`, `modal.tsx`, `data-table.tsx` |
+| api-contract/ | 请求/响应类型、路径、方法 | `user.contract.ts` |
+| api/ | 调用实现 | `user.api.ts` |
+| hooks/ | 自定义 hooks | `use-user-list.ts` |
+| utils/ | 工具函数 | `format.util.ts` |
+| constants/ | 常量 | `route.constants.ts` |
+| types/ | 全局类型 | `user.types.ts` |
+
+## 命名规范
+
+- **hooks**: `use-*.ts`
+- **utils**: `*.util.ts` 或 `*.utils.ts`
+- **constants**: `*.constants.ts`
+- **types**: `*.types.ts` 或 `*.d.ts`
+- **contract**: `*.contract.ts`

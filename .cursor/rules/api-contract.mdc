@@ -1,0 +1,45 @@
+---
+description: API Contract 协议优先与定义格式
+globs: "**/api-contract/**", "**/api/**"
+alwaysApply: false
+---
+
+# API Contract 协议优先
+
+## 流程
+
+实现 API 调用前必须先定义 API Contract。Contract 供同一 workspace 内后端生成 DTO 使用。
+
+## 定义位置
+
+- 各 app 的 `src/api-contract/` 目录
+- 按业务域拆分：`user.contract.ts`、`auth.contract.ts`
+
+## Contract 结构
+
+```typescript
+// api-contract/user.contract.ts
+export type User = { id: number; name: string };
+
+export namespace UserContract {
+  export type ListRequest = { page: number; pageSize: number };
+  export type ListResponse = { list: User[]; total: number };
+  export const list = { path: '/api/users', method: 'GET' } as const;
+
+  export type CreateRequest = Omit<User, 'id'>;
+  export type CreateResponse = User;
+  export const create = { path: '/api/users', method: 'POST' } as const;
+}
+```
+
+## 实现层引用
+
+```typescript
+// api/user.api.ts
+import { UserContract } from '../api-contract/user.contract';
+
+export const userApi = {
+  list: (params: UserContract.ListRequest) =>
+    fetch(UserContract.list.path + '?' + new URLSearchParams(params)),
+};
+```
