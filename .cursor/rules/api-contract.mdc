@@ -14,6 +14,23 @@ alwaysApply: false
 
 - 各 app 的 `src/api-contract/` 目录
 - 按业务域拆分：`user.contract.ts`、`auth.contract.ts`
+- 公共响应类型：`response.types.ts`（供各业务 Contract 引用）
+
+## 响应类型（response.types.ts）
+
+```typescript
+export const ApiCode = { Success: 0, ValidationError: 1000 } as const;
+
+export type ValidationError = { field: string; message: string };
+
+export type ApiResult<T> = { code: number; message: string; data: T };
+
+export type ApiResultOrValidation<T> =
+  | { code: 0; message: string; data: T | null }
+  | { code: 1000; message: string; data: ValidationError[] };
+```
+
+业务 Response 类型表示「成功时的 data」，而非 wrapper 本身。
 
 ## Contract 结构
 
@@ -23,23 +40,28 @@ export type User = { id: number; name: string };
 
 export namespace UserContract {
   export type ListRequest = { page: number; pageSize: number };
-  export type ListResponse = { list: User[]; total: number };
+  export type ListResponse = { list: User[]; total: number };  // 成功时的 data
   export const list = { path: '/api/users', method: 'GET' } as const;
 
   export type CreateRequest = Omit<User, 'id'>;
-  export type CreateResponse = User;
+  export type CreateResponse = User | null;  // 成功时的 data
   export const create = { path: '/api/users', method: 'POST' } as const;
 }
 ```
 
+后端实际返回 `ApiResult<ListResponse>`，即 `{ code, message, data }`。
+
 ## 实现层引用
+
+使用 `httpClient`（见 http-client 规则），返回值已是解包后的 data：
 
 ```typescript
 // api/user.api.ts
 import { UserContract } from '../api-contract/user.contract';
+import { httpClient } from '../http-client';
 
 export const userApi = {
   list: (params: UserContract.ListRequest) =>
-    fetch(UserContract.list.path + '?' + new URLSearchParams(params)),
+    httpClient.get<UserContract.ListResponse>(UserContract.list.path, params),
 };
 ```
