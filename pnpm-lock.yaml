@@ -26,6 +26,9 @@ importers:
       '@repo/http-client':
         specifier: workspace:*
         version: link:../../packages/http-client
+      '@repo/ui-react':
+        specifier: workspace:*
+        version: link:../../packages/ui-react
       react:
         specifier: 19.2.0
         version: 19.2.0
@@ -66,6 +69,9 @@ importers:
       '@repo/http-client':
         specifier: workspace:*
         version: link:../../packages/http-client
+      '@repo/ui-vue':
+        specifier: workspace:*
+        version: link:../../packages/ui-vue
       vue:
         specifier: 3.5.25
         version: 3.5.25(typescript@5.9.3)
@@ -97,11 +103,16 @@ importers:
 
   packages/config-tailwind:
     dependencies:
+      '@repo/design-tokens':
+        specifier: workspace:*
+        version: link:../design-tokens
       tailwindcss:
         specifier: '>=4.0.0'
         version: 4.1.18
 
   packages/config-typescript: {}
+
+  packages/design-tokens: {}
 
   packages/http-client:
     dependencies:
@@ -115,6 +126,33 @@ importers:
       typescript:
         specifier: 5.9.3
         version: 5.9.3
+
+  packages/ui-react:
+    devDependencies:
+      '@repo/config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@types/react':
+        specifier: 19.0.6
+        version: 19.0.6
+      react:
+        specifier: 19.2.0
+        version: 19.2.0
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+
+  packages/ui-vue:
+    devDependencies:
+      '@repo/config-typescript':
+        specifier: workspace:*
+        version: link:../config-typescript
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vue:
+        specifier: 3.5.25
+        version: 3.5.25(typescript@5.9.3)
 
 packages:
 

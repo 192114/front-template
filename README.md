@@ -19,13 +19,35 @@ front-template/
 ├── apps/
 │   ├── web-vue/      # Vue 3 + Vite
 │   ├── web-react/    # React 19 + Vite
-│   └── web-solid/    # SolidJS + Vite
 ├── packages/
 │   ├── config-typescript/  # Shared TS configs
-│   └── config-tailwind/    # Shared Tailwind 4 CSS
+│   ├── config-tailwind/    # Shared Tailwind 4 CSS
+│   ├── design-tokens/      # UI design tokens (colors, spacing, typography)
+│   ├── http-client/        # HTTP client with auth & refresh
+│   ├── ui-react/           # Shared React UI components
+│   └── ui-vue/             # Shared Vue UI components
 ├── pnpm-workspace.yaml
 ├── turbo.json
 └── biome.json
+```
+
+### App src structure (feature-based)
+
+```
+src/
+├── features/         # 按业务域划分
+│   └── {domain}/
+├── components/       # 纯 UI 组件
+├── layouts/          # 布局
+├── routes/           # 路由配置
+├── services/         # 业务逻辑
+├── api/              # API 请求（唯一 HTTP 入口）
+├── api-contract/     # API 协议定义
+├── store/            # 全局状态
+├── hooks/
+├── utils/
+├── types/
+└── constants/
 ```
 
 ## Commands

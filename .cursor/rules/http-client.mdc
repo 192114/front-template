@@ -8,9 +8,10 @@ alwaysApply: false
 
 ## 约束
 
-- API 请求必须使用 `@repo/http-client` 创建的实例，**禁止**在 api 层使用 raw fetch
+- API 请求必须使用 `@repo/http-client` 创建的实例，**禁止**在 api 层使用 raw fetch 或 axios
 - 各 app 在 `src/http-client.ts` 中 `createHttpClient(config)` 并导出
-- api 层从 `../http-client` 或 `@/http-client` 导入 `httpClient`
+- **硬性规则**：`api/*.api.ts` 是唯一允许调用 `httpClient` 的位置
+- features、services、components、hooks 等**禁止**直接使用 httpClient、axios 或 fetch，必须通过 `api/` 导出的函数发起请求
 
 ## 方法
 

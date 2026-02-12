@@ -9,27 +9,35 @@ alwaysApply: true
 
 ```
 src/
-├── pages/              # 按业务域划分的页面
-│   └── {domain}/       # 如 users、auth
+├── features/           # 按业务域划分的功能模块
+│   └── {domain}/       # 如 users、auth、dashboard
 │       ├── *.page.tsx  # 或 *.page.vue 页面入口
-│       └── *-*.tsx     # 业务组件（如 user-table、user-form）
+│       └── *-*.tsx     # 该 feature 内的业务组件
 ├── components/         # 纯 UI 组件（无业务逻辑）
-├── api-contract/       # API 协议定义（先定义，供后端生成 DTO）
-├── api/                # 基于 contract 的请求实现
+├── layouts/            # 布局组件（header、sidebar、main-layout 等）
+├── routes/             # 路由配置与定义
+├── services/           # 业务逻辑层（可调用 api）
+├── api/                # API 请求实现（唯一允许发起 HTTP 的入口）
+├── api-contract/       # API 协议定义
+├── store/              # 全局状态管理
 ├── hooks/              # 自定义 hooks
 ├── utils/              # 工具函数
-├── constants/          # 常量
-└── types/              # 全局类型定义
+├── types/              # 全局类型定义
+└── constants/          # 常量
 ```
 
 ## 职责划分
 
 | 目录 | 职责 | 示例 |
 |------|------|------|
-| pages/* | 页面入口 + 业务组件 | `user-list.page.tsx`, `user-table.tsx` |
-| components/ | 纯 UI，可跨页面复用 | `button.tsx`, `modal.tsx`, `data-table.tsx` |
+| features/* | 页面 + 该业务域内的业务组件 | `user-list.page.tsx`, `user-table.tsx` |
+| components/ | 纯 UI，可跨 feature 复用 | `button.tsx`, `modal.tsx`, `data-table.tsx` |
+| layouts/ | 页面布局脚手架 | `main-layout.tsx`, `auth-layout.tsx` |
+| routes/ | 路由配置 | `index.ts`, `routes.config.ts` |
+| services/ | 业务逻辑、组合 api 调用 | `user.service.ts` |
+| api/ | HTTP 请求，使用 httpClient | `user.api.ts` |
 | api-contract/ | 请求/响应类型、路径、方法 | `user.contract.ts` |
-| api/ | 调用实现 | `user.api.ts` |
+| store/ | 全局状态 | `user.store.ts` |
 | hooks/ | 自定义 hooks | `use-user-list.ts` |
 | utils/ | 工具函数 | `format.util.ts` |
 | constants/ | 常量 | `route.constants.ts` |
@@ -42,3 +50,5 @@ src/
 - **constants**: `*.constants.ts`
 - **types**: `*.types.ts` 或 `*.d.ts`
 - **contract**: `*.contract.ts`
+- **service**: `*.service.ts`
+- **api**: `*.api.ts`
